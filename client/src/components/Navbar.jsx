@@ -6,21 +6,35 @@ import {
   Icon,
   Text,
   useDisclosure,
-  button,
+  Button,
   Stack,
   useColorModeValue,
   useColorMode,
   IconButton,
-  textDecoration,
-  Button,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { GiDumplingBao } from "react-icons/gi";
+import { useSelector } from "react-redux";
+import { FiShoppingCart } from "react-icons/fi";
+
+const ShoppingCartIcon = () => {
+  const cartInfo = useSelector((state) => state.cart);
+  const { cart } = cartInfo;
+  return (
+    <Flex>
+      <Text fontStyle="italic" as="sub" fontSize="xs">
+        {cart.length}
+      </Text>
+      <Icon ml="-1.5" as={FiShoppingCart} h="4" w="7" alignSelf="center" />
+      Cart
+    </Flex>
+  );
+};
 
 const links = [
   { linkName: "Products", path: "/products" },
-  { linkName: "ShoppingCartIcon", path: "/cart" },
+  { linkName: <ShoppingCartIcon />, path: "/cart" },
 ];
 
 const NavLink = ({ path, children }) => (
@@ -42,8 +56,9 @@ const NavLink = ({ path, children }) => (
 const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Box bg={useColorModeValue("yellow.400", "yellow.900")} px={4}>
+    <Box bg={useColorModeValue("red.600", "red.900")} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
           size="md"
@@ -56,7 +71,9 @@ const Navbar = () => {
           <Link as={ReactLink} to="/" style={{ textDecoration: "none" }}>
             <Flex alignItems="center">
               <Icon as={GiDumplingBao} h={6} w={6} color="white" />
-              <Text fontWeight="extrabold">DimSum Snack</Text>
+              <Text fontWeight="extrabold" color="white">
+                DimSum Snack
+              </Text>
             </Flex>
           </Link>
           <HStack as="nav" spacing={4} display={{ base: "none", md: "flex" }}>
@@ -72,7 +89,7 @@ const Navbar = () => {
             <Icon
               cursor="pointer"
               mr="3"
-              as={colorMode === "light" ? SunIcon : MoonIcon}
+              as={colorMode === "light" ? MoonIcon : SunIcon}
               alignSelf="center"
               onClick={() => toggleColorMode()}
             />
@@ -94,7 +111,7 @@ const Navbar = () => {
             display={{ base: "none", md: "inline-flex" }}
             fontSize="sm"
             fontWeight={600}
-            _hover={{ bg: "orange.400" }}
+            _hover={{ bg: "yellow.400" }}
             bg="white"
           >
             Sign Up
