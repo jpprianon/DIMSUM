@@ -1,9 +1,10 @@
 import {
   Box,
+  Image,
+  Icon,
   Flex,
   HStack,
   Link,
-  Icon,
   Text,
   useDisclosure,
   Button,
@@ -14,39 +15,48 @@ import {
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { GiDumplingBao } from "react-icons/gi";
 import { useSelector } from "react-redux";
 import { FiShoppingCart } from "react-icons/fi";
+import Logo from "../Logo/Logo.svg";
+import { useState } from "react";
 
 const ShoppingCartIcon = () => {
   const cartInfo = useSelector((state) => state.cart);
   const { cart } = cartInfo;
   return (
-    <Flex>
-      <Text fontStyle="italic" as="sub" fontSize="xs">
+    <Flex color="white">
+      <Text fontStyle="italic" as="sub" fontSize="xs" color="white">
         {cart.length}
       </Text>
-      <Icon ml="-1.5" as={FiShoppingCart} h="4" w="7" alignSelf="center" />
-      Cart
+      <Icon
+        ml="-1.5"
+        as={FiShoppingCart}
+        h="4"
+        w="7"
+        alignSelf="center"
+        color="white"
+      />
+      Achats
     </Flex>
   );
 };
 
 const links = [
-  { linkName: "Products", path: "/products" },
+  { linkName: "Nos produits", path: "/products" },
   { linkName: <ShoppingCartIcon />, path: "/cart" },
 ];
 
 const NavLink = ({ path, children }) => (
   <Link
     as={ReactLink}
+    color="white"
     to={path}
     px={2}
     py={2}
     rounded="md"
     _hover={{
       textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
+      bg: useColorModeValue("yellow.400", "yellow.400"),
     }}
   >
     {children}
@@ -56,6 +66,7 @@ const NavLink = ({ path, children }) => (
 const Navbar = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isHovering, setIsHovering] = useState(false);
 
   return (
     <Box bg={useColorModeValue("red.600", "red.900")} px={4}>
@@ -68,11 +79,21 @@ const Navbar = () => {
         />
 
         <HStack>
-          <Link as={ReactLink} to="/" style={{ textDecoration: "none" }}>
+          <Link
+            as={ReactLink}
+            to="/"
+            style={{ textDecoration: "none" }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             <Flex alignItems="center">
-              <Icon as={GiDumplingBao} h={6} w={6} color="white" />
               <Text fontWeight="extrabold" color="white">
-                DimSum Snack
+                <Image
+                  boxSize="150px"
+                  src={Logo}
+                  alt="Logo"
+                  color={isHovering ? "cyan.400" : "orange.800"}
+                />
               </Text>
             </Flex>
           </Link>
@@ -101,8 +122,10 @@ const Navbar = () => {
             fontSize="sm"
             fontWeight={400}
             variant="link"
+            _hover={{ bg: "yellow.400" }}
+            color="white"
           >
-            Sign In
+            Se connecter
           </Button>
           <Button
             as={ReactLink}
@@ -112,7 +135,8 @@ const Navbar = () => {
             fontSize="sm"
             fontWeight={600}
             _hover={{ bg: "yellow.400" }}
-            bg="white"
+            bg="yellow.500"
+            color="white"
           >
             Sign Up
           </Button>
